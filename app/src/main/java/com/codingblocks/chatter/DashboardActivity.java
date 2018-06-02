@@ -28,8 +28,6 @@ import okhttp3.Response;
 
 public class DashboardActivity extends AppCompatActivity {
 
-    @BindView(R.id.nav_view) BottomNavigationView bottomNavigationView;
-
     OkHttpClient client = new OkHttpClient();
 
     public int savedMenuItemId;
@@ -111,20 +109,10 @@ public class DashboardActivity extends AppCompatActivity {
             }
         }
 
-        if(savedInstanceState == null){
-            savedMenuItemId = bottomNavigationView.getMenu().getItem(0).getItemId();
-        } else {
-            savedMenuItemId = savedInstanceState.getInt("arg_last_menu_item_id");
-        }
-        selectFragment(savedMenuItemId);
+        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+        transaction.replace(R.id.fragment_holder, new RoomsFragment());
+        transaction.commit();
 
-        bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
-            @Override
-            public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
-                selectFragment(menuItem.getItemId());
-                return true;
-            }
-        });
         NotificationManager nManager = (NotificationManager)
                 this.getSystemService(Context.NOTIFICATION_SERVICE);
         if (nManager != null) {
@@ -132,23 +120,6 @@ public class DashboardActivity extends AppCompatActivity {
         }
     }
 
-    public void selectFragment(int id){
-        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-        switch(id) {
-            case R.id.action_dashboard:
-                transaction.replace(R.id.fragment_holder, new DashboardFragment());
-                break;
-            case R.id.action_rooms:
-                transaction.replace(R.id.fragment_holder, new RoomsFragment());
-                break;
-            case R.id.action_settings:
-                transaction.replace(R.id.fragment_holder, new SettingsFragment());
-                break;
-        }
-        // Save the menu id and commit the transaction
-        savedMenuItemId = id;
-        transaction.commit();
-    }
 
     public boolean isNetworkAvailable() {
         ConnectivityManager connectivityManager =

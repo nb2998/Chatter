@@ -35,6 +35,10 @@
             android:name=".DashboardActivity"
             android:label="@string/all_rooms"
             android:theme="@style/AppTheme" />
+        <activity
+            android:name=".MyPreferenceActivity"
+            android:label="Preferences">
+        </activity>
 
         <service
             android:name=".AuthenticatorService">
